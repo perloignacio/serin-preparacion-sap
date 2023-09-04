@@ -8,11 +8,5 @@ import { Component } from '@angular/core';
 export class MenuComponent {
   menu:boolean=false;
   
-  toggleMenu(){
-    if(this.menu){
-      this.menu=false;
-    }else{
-      this.menu=true;
-    }
-  }
+ 
 }
