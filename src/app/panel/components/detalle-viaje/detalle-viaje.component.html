@@ -1,0 +1,120 @@
+<div class="container-fluid mt-3">
+    <div class="row ">
+        <div class="col-lg-12 mb-3 ">
+            <div class="card bg-secondary bg-opacity-10 ">
+                <div class="card-body">                    
+                    <h4 class="card-title border-bottom mb-3">#111  -  transporte <span class="kg badge text-primary fs-5 float-end">550 kg</span></h4>
+                   
+                    <div class="row mt-5 ">
+                        <div class="col-lg-4 mb-3 ">
+                            <div class="operario">
+                                <h4 class="">Cargardores:</h4>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores" [disabled]="cerrado">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                                    <div class="form-check form-switch col-md-6">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
+                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="remitos ">
+                                <h4>Remitos:</h4>
+                                
+                                <div class="form-check form-switch col-md-6">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos" (click)="checkTime(12235)" [disabled]="cargado">
+                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
+                                    <span class="text-nowrap" *ngIf="cargado">  T: 00:00:00</span>
+                                </div>
+                                <div class="form-check form-switch col-md-6">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
+                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
+                                    <span class="text-nowrap">  T: 00:00:00</span>
+                                </div>
+                                <div class="form-check form-switch col-md-6">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
+                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
+                                    <span class="text-nowrap">  T: 00:00:00</span>
+                                </div>
+                                <div class="form-check form-switch col-md-6">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
+                                    <label class="form-check-label" for="remitos">#12235 - cliente con nombre mas largo</label>
+                                    <span class="text-nowrap">  T: 00:00:00</span>
+                                </div>
+                                <div class="form-check form-switch col-md-6">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
+                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
+                                    <span class="text-nowrap">  T: 00:00:00</span>
+                                </div>
+                            </div>
+                        </div> 
+                        <span class="obs col-lg-4"><small>observaciones: <br></small>
+                        Lorem ipsum dolor sit amet consectetur 
+                    </span>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-evenly">
+                    <div class="cronometro text-center">
+                        <h4>{{ horas | number:'2.0' }}:{{ minutos | number:'2.0' }}:{{ segundos | number:'2.0' }}</h4>
+                        <div class="botones d-flex justify-content-center gap-2">
+                            <a (click)="iniciar()" class="text-decoration-none" title="Iniciar / Pausar">
+                                <i class="fa fa-play fs-4" [ngClass]="play ? 'fa-pause' : 'fa-play'"></i>
+                            </a>
+                            <a href="" class="" data-toggle="tooltip" data-placement="top" title="Detener" data-original-title="Detener">
+                                <i class="fa fa-stop fs-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="calificacion text-center"> 
+                        Calificación
+                        <div class="stars d-flex gap-3 text-center">
+                            <a href=""><span class="fa fa-star fs-4 checked"></span></a>
+                            <a href=""><span class="fa fa-star fs-4 checked"></span></a>
+                            <a href=""><span class="fa fa-star fs-4 "></span></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</div>
+

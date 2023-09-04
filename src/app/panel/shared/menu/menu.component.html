@@ -1,0 +1,26 @@
+
+    <!-- Sidebar  -->
+
+        <nav id="sidebar" [ngClass]="{'active': menu}">
+            <div class="sidebar-header">
+                
+                <img src="../../assets/img/logo_grupo_serin.png" alt="SERIN" class="text-center">
+                <button class="btn btn-info d-inline-block  ml-auto  float-end " (click)="toggleMenu()"  type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+            
+            <ul class="list-unstyled components">
+                
+                <li >
+                    <a routerLink="viajes">Viajes <i class="fa fa-truck fs-2 float-end me-3"></i></a> 
+                </li>
+            </ul>
+            <div class="copyright">
+                <span>Copyright 2023</span>
+            </div>
+        </nav>
+
+
+ 
+
