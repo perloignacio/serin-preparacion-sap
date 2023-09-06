@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Viajes } from 'src/app/models/viajes.model';
+import { ViajesService } from 'src/app/services/viajes/viajes.service';
 
 @Component({
   selector: 'app-viajes',
@@ -8,16 +9,29 @@ import { Viajes } from 'src/app/models/viajes.model';
 })
 
 export class ViajesComponent {
-  viaje:Viajes = new Viajes();
+  viajes:Viajes[] = [];
+  // viaje:Viajes = new Viajes();
+  filtroViajes:Viajes[]=[];
+  strFiltro: "";
+  constructor(private srvViajes: ViajesService){
 
-  constructor(){
-    this.viaje.nroviaje = 111;
-    this.viaje.viaje= "viaje";
-    this.viaje.transporte= "Transporte El transportador";
-    this.viaje.codtransporte = 1525;
-    this.viaje.clientes = 15;
-    this.viaje.peso = 500;
-    this.viaje.fecha= "2023/08/23";
-
+this.srvViajes.getViajesAbiertos().subscribe((x)=> {
+  next:{
+    this.viajes = x;
+   this.refreshData();
   }
+})
+  
+
+}
+refreshData(){
+  this.filtroViajes=this.viajes;
+}
+
+Filtro(){
+  this.filtroViajes=this.viajes.filter(obj => {
+    const term = this.strFiltro.toLowerCase();
+    return obj.viaje.toLowerCase().includes(term) ||  obj.transporte.toLowerCase().includes(term)
+  });
+}
 }

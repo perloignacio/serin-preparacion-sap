@@ -6,6 +6,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ViajesComponent } from './components/viajes/viajes.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { DetalleViajeComponent } from './components/detalle-viaje/detalle-viaje.component';
+import { FormsModule } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -18,7 +20,9 @@ import { DetalleViajeComponent } from './components/detalle-viaje/detalle-viaje.
   ],
   imports: [
     CommonModule,
-    PanelRoutingModule
+    PanelRoutingModule,
+    FormsModule,
+    NgbCollapseModule
   ]
 })
 export class PanelModule { }

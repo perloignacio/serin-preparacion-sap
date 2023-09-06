@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { interval } from 'rxjs/internal/observable/interval';
 import { Remitos } from 'src/app/models/remitos.model';
 import { Tiempo } from 'src/app/models/tiempo.model';
@@ -12,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./detalle-viaje.component.scss']
 })
 export class DetalleViajeComponent {
+  colapseOperarios = false;
+  colapseRemitos = false;
+  
 tiempo:Date;
 play:boolean=false;
 marca: Date = new Date();
@@ -22,21 +26,14 @@ cliente:Remitos= new Remitos();
   minutos: number = 0;
   segundos: number = 0;
   cargado:boolean = false;
-  
+  viaje:string;
   cerrado:boolean = false;
-constructor(public time: DatePipe){
 
+constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router){
+  this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
 }
   iniciar(){
     const source = interval(1000);
-
-
-    // var numbers:Tiempo = new Tiempo(); 
-    // numbers.horas = 24;
-    // numbers.minutos = 25;
-    // numbers.segundos = 23;
-    // this.cliente.remito = 2400 ;
-    // this.cliente.tiempo = numbers ;
 
     if(!this.play){
       Swal.fire({
@@ -50,6 +47,7 @@ constructor(public time: DatePipe){
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           this.cerrado = true;
+          this.colapseOperarios = true;
           error: ()=>{
             }
         }

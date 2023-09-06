@@ -1,98 +1,96 @@
 <div class="container-fluid mt-3">
-    <div class="row ">
+    <div class="row mb-5">
         <div class="col-lg-12 mb-3 ">
             <div class="card bg-secondary bg-opacity-10 ">
+                <h4 class="card-header border-bottom mb-3">#{{ viaje }}  -  transporte <span class="kg badge text-primary fs-5 float-end">550 kg</span></h4>
                 <div class="card-body">                    
-                    <h4 class="card-title border-bottom mb-3">#111  -  transporte <span class="kg badge text-primary fs-5 float-end">550 kg</span></h4>
-                   
-                    <div class="row mt-5 ">
-                        <div class="col-lg-4 mb-3 ">
-                            <div class="operario">
-                                <h4 class="">Cargardores:</h4>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores" [disabled]="cerrado">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
+                    <div class="fecha float-end">20/08/2023</div>                 
+                    <h5 class="card-title mb-3"><b>#1111</b> - Transporte</h5>
+                    <hr>
+                    <div class="row  ">
+                        <span class="obs mb-3"><small>observaciones: <br></small>
+                            Lorem ipsum dolor sit amet consectetur 
+                        </span>
+                        <div class="col-lg-6 mb-3 ">
+
+                            <p>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-info"
+                                    (click)="colapseOperarios = !colapseOperarios"
+                                    [attr.aria-expanded]="!colapseOperarios"
+                                    aria-controls="collapseExample"
+                                >
+                                    Operarios
+                                </button>
+                            </p>
+                            <div #collapse="ngbCollapse" [(ngbCollapse)]="colapseOperarios">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="operario">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="cargardores" [disabled]="cerrado">
+                                                <label class="form-check-label" for="cargardores">Juan Perez</label>                                    
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
-                                    <div class="form-check form-switch col-md-6">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="cargardores">
-                                        <label class="form-check-label" for="cargardores">Juan Perez</label>
-                                        
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="" *ngIf="colapseOperarios">
+                                <div class="cargadores d-flex ">
+                                    <span class="cargador ">
+                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary " href="#" data-bs-toggle="tooltip" data-bs-title="Juan Perez">JP</a>
+                                    </span><span class="cargador">
+                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">PJ</a>
+                                    </span>
+                                    <span class="cargador">
+                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">DH</a>
+                                    </span>
+                                    <span class="cargador">
+                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">NP </a>
+                                    </span>
+                                    <span class="cargador">
+                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">FV </a>
+                                    </span>
+                                    <!-- <a href="#" class="btn btn-xs btn-primary btn-rounded">+ more</a> -->
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 ">
-                            <div class="remitos ">
-                                <h4>Remitos:</h4>
-                                
-                                <div class="form-check form-switch col-md-6">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos" (click)="checkTime(12235)" [disabled]="cargado">
-                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
-                                    <span class="text-nowrap" *ngIf="cargado">  T: 00:00:00</span>
-                                </div>
-                                <div class="form-check form-switch col-md-6">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
-                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
-                                    <span class="text-nowrap">  T: 00:00:00</span>
-                                </div>
-                                <div class="form-check form-switch col-md-6">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
-                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
-                                    <span class="text-nowrap">  T: 00:00:00</span>
-                                </div>
-                                <div class="form-check form-switch col-md-6">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
-                                    <label class="form-check-label" for="remitos">#12235 - cliente con nombre mas largo</label>
-                                    <span class="text-nowrap">  T: 00:00:00</span>
-                                </div>
-                                <div class="form-check form-switch col-md-6">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="remitos">
-                                    <label class="form-check-label" for="remitos">#12235 - Cliente</label>
-                                    <span class="text-nowrap">  T: 00:00:00</span>
+                        <div class="col-lg-6 ">
+                            <p>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-info"
+                                    (click)="colapseRemitos = !colapseRemitos"
+                                    [attr.aria-expanded]="!colapseRemitos"
+                                    aria-controls="collapseExample"
+                                >
+                                    Remitos
+                                </button>
+                            </p>
+                            <div #collapse="ngbCollapse" [(ngbCollapse)]="colapseRemitos">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="remitos ">                                            
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="remitos" (click)="checkTime(12235)" [disabled]="cargado">
+                                                <label class="form-check-label" for="remitos">#12235 - Cliente</label>
+                                                <span class="text-nowrap" *ngIf="cargado">  T: 00:00:00</span>
+                                            </div>
+                                        </div>
+                                    </div> 
                                 </div>
                             </div>
+                           
+                           
+                           
+                           
+                        
                         </div> 
-                        <span class="obs col-lg-4"><small>observaciones: <br></small>
-                        Lorem ipsum dolor sit amet consectetur 
-                    </span>
+                       
                     </div>
                 </div>
-                <div class="card-footer d-flex justify-content-evenly">
+                <div class="card-footer card-footer d-flex justify-content-evenly sticky-bottom bottom-0 start-0 w-100 bg-secondary-subtle d-flex justify-content-evenly">
                     <div class="cronometro text-center">
                         <h4>{{ horas | number:'2.0' }}:{{ minutos | number:'2.0' }}:{{ segundos | number:'2.0' }}</h4>
                         <div class="botones d-flex justify-content-center gap-2">

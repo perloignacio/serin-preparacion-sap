@@ -3,3 +3,19 @@
   }
 
 
+
+  .cargador{
+    width: 35px;
+    text-align: center;
+}
+.cargador a{
+    width: 40px;
+    aspect-ratio: 1;
+    outline: solid 1px white;
+    display: block; 
+    cursor: pointer;
+}
+.cargador a:hover{
+    z-index: 2;
+    position: relative;
+}

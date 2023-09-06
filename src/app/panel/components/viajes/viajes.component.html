@@ -1,10 +1,20 @@
+<div class="buscador m-5 ">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Buscar viaje o transporte" aria-label="Buscar" [(ngModel)]="strFiltro" (keyup)="Filtro()">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+</div>
 <div class="container mt-3">
     <div class="row">        
-        <div class="col-lg-6 mb-3"><div class="card bg-secondary bg-opacity-10">
+        <div class="col-lg-6 mb-3" *ngFor="let viaje of filtroViajes">
+            <div class="card bg-secondary bg-opacity-10">
             <h3 class="card-header"><b>#{{ viaje.nroviaje }}</b> - {{ viaje.viaje }} <span class="kg badge text-primary fs-5 float-end">{{ viaje.peso }} kg</span></h3>
             <div class="card-body">   
-                <div class="fecha float-end">{{ viaje.fecha }}</div>                 
+                <div class="fecha float-end">{{ viaje.fecha | date: 'dd-MM-YYYY'}}</div>                 
                 <h5 class="card-title mb-3"><b>#{{ viaje.codtransporte }}</b> - {{ viaje.transporte }}</h5>
+                <hr>
                 <div class="card-text">
                     <div class="clientes flex-grow-1 flex-shrink-0">
                         <strong>{{ viaje.clientes }} Clientes (*** Remitos)</strong>
@@ -34,7 +44,7 @@
                     </div>
             </div>
             <div class="card-footer d-flex justify-content-evenly">
-                <button routerLink="/detalle" class="btn btn-primary text-white">Ver detalles</button>
+                <button routerLink="../detalle/{{ viaje.nroviaje }}" class="btn btn-primary text-white">Ver detalles</button>
 
             </div>
         </div></div>
