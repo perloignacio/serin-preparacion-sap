@@ -1,18 +1,17 @@
 <div class="container-fluid mt-3">
-    <div class="row mb-5">
+    <div class="row mb-5 mx-md-4">
         <div class="col-lg-12 mb-3 ">
             <div class="card bg-secondary bg-opacity-10 ">
-                <h4 class="card-header border-bottom mb-3">#{{ viaje }}  -  transporte <span class="kg badge text-primary fs-5 float-end">550 kg</span></h4>
+                <h4 class="card-header border-bottom mb-3">#{{ detalleViaje.nroviaje }}  -  {{ detalleViaje.viaje }} <span class="kg badge text-primary fs-5 float-end">{{ detalleViaje.peso }} kg</span></h4>
                 <div class="card-body">                    
-                    <div class="fecha float-end">20/08/2023</div>                 
-                    <h5 class="card-title mb-3"><b>#1111</b> - Transporte</h5>
+                    <div class="fecha float-end">{{ detalleViaje.fecha | date: 'dd-MM-YYYY' }}</div>                 
+                    <h5 class="card-title mb-3"><b>#{{ detalleViaje.codtransporte }}</b> - {{ detalleViaje.transporte }}</h5>
                     <hr>
                     <div class="row  ">
-                        <span class="obs mb-3"><small>observaciones: <br></small>
+                        <!-- <span class="obs mb-3"><small>observaciones: <br></small>
                             Lorem ipsum dolor sit amet consectetur 
-                        </span>
+                        </span> -->
                         <div class="col-lg-6 mb-3 ">
-
                             <p>
                                 <button
                                     type="button"
@@ -27,10 +26,10 @@
                             <div #collapse="ngbCollapse" [(ngbCollapse)]="colapseOperarios">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="operario">
+                                        <div class="operario" *ngFor="let cargador of listCargadores">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="cargardores" [disabled]="cerrado">
-                                                <label class="form-check-label" for="cargardores">Juan Perez</label>                                    
+                                                <input class="form-check-input" type="checkbox" role="switch" id="cargardores-{{cargador.Idusuario}}" (click)="cargarOperario(cargador.Idusuario)" [disabled]="cerrado" [checked]="isCargador(cargador.Idusuario)">
+                                                <label class="form-check-label" for="cargardores-{{cargador.Idusuario}}">{{ cargador.Nombre }} {{ cargador.Apellido }}</label>                                    
                                             </div>
                                         </div>
                                     </div>
@@ -38,19 +37,8 @@
                             </div>
                             <div class="" *ngIf="colapseOperarios">
                                 <div class="cargadores d-flex ">
-                                    <span class="cargador ">
-                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary " href="#" data-bs-toggle="tooltip" data-bs-title="Juan Perez">JP</a>
-                                    </span><span class="cargador">
-                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">PJ</a>
-                                    </span>
-                                    <span class="cargador">
-                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">DH</a>
-                                    </span>
-                                    <span class="cargador">
-                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">NP </a>
-                                    </span>
-                                    <span class="cargador">
-                                        <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">FV </a>
+                                    <span class="cargador " *ngFor="let cargActivo of cargadoresActivos, let i = index">
+                                        <a   class="rounded-circle text-decoration-none text-white p-2 bg-primary " placement="top" ngbTooltip="{{ cargActivo.Nombre}} {{cargActivo.Apellido }}" >{{ cargActivo.Nombre |slice:0:1}}{{ cargActivo.Apellido |slice:0:1 }}</a>
                                     </span>
                                     <!-- <a href="#" class="btn btn-xs btn-primary btn-rounded">+ more</a> -->
                                 </div>
@@ -71,11 +59,11 @@
                             <div #collapse="ngbCollapse" [(ngbCollapse)]="colapseRemitos">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="remitos ">                                            
+                                        <div class="remitos " *ngFor="let remito of detalleViaje.detalle">                                            
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="remitos" (click)="checkTime(12235)" [disabled]="cargado">
-                                                <label class="form-check-label" for="remitos">#12235 - Cliente</label>
-                                                <span class="text-nowrap" *ngIf="cargado">  T: 00:00:00</span>
+                                                <input class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Remito }}" >
+                                                <label class="form-check-label" for="remitos-{{ remito.Remito }}">#{{ remito.Remito }} - {{remito.Cliente}}</label>
+                                                
                                             </div>
                                         </div>
                                     </div> 
@@ -90,29 +78,107 @@
                        
                     </div>
                 </div>
-                <div class="card-footer card-footer d-flex justify-content-evenly sticky-bottom bottom-0 start-0 w-100 bg-secondary-subtle d-flex justify-content-evenly">
-                    <div class="cronometro text-center">
-                        <h4>{{ horas | number:'2.0' }}:{{ minutos | number:'2.0' }}:{{ segundos | number:'2.0' }}</h4>
+                <div class="card-footer card-footer d-flex justify-content-evenly sticky-bottom bottom-0 start-0 w-100 bg-secondary-subtle d-flex justify-content-evenly z-2">
+                    <div class="cronometro text-center" *ngIf=" detalleViaje.carga?.Estado != 3">
+                        <h4><b><small *ngIf="dias>0">{{ dias | number:'2.0' }} días</small></b> {{ horas | number:'2.0' }}:{{ minutos | number:'2.0' }}:{{ segundos | number:'2.0' }}</h4>
                         <div class="botones d-flex justify-content-center gap-2">
-                            <a (click)="iniciar()" class="text-decoration-none" title="Iniciar / Pausar">
-                                <i class="fa fa-play fs-4" [ngClass]="play ? 'fa-pause' : 'fa-play'"></i>
-                            </a>
-                            <a href="" class="" data-toggle="tooltip" data-placement="top" title="Detener" data-original-title="Detener">
+                            <button  class=" btn text-success" placement="bottom" ngbTooltip="Iniciar / Pausar" [disabled]="cerrado">
+                                <i class="fa fa-play fs-4" [ngClass]="play ? 'fa-pause' : 'fa-play'"  (click)="!play ? iniciar() : openModal(motivo)"></i>
+                            </button>
+                            <button class="btn text-success" placement="bottom" ngbTooltip="Detener" [disabled]="detalleViaje.carga?.Estado == 2 || detalleViaje.carga?.movimientos?.length == 0" (click)="detener()">
                                 <i class="fa fa-stop fs-4"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
-                    <div class="calificacion text-center"> 
+                    <div class="calificacion text-center" *ngIf="detalleViaje.carga?.Estado == 3"> 
                         Calificación
                         <div class="stars d-flex gap-3 text-center">
+                            <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
                             <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                            <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                            <a href=""><span class="fa fa-star fs-4 "></span></a>
+                            <a href=""><span class="fa fa-star fs-4 "></span></a> -->
+
+                            <ngb-rating [(rate)]="detalleViaje.carga.Calificacion" [max]="3" >
+                                <ng-template let-fill="fill" let-index="index">
+                                    
+                                    <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" ></i>
+                                </ng-template>
+                            </ngb-rating>
                         </div>
                     </div>
+                    <div class="foto text-center" *ngIf="detalleViaje.carga?.Estado == 3" >
+                        Agregar Fotografías
+                        <div class="addfotos d-flex gap-3 text-center ">
+                           
 
+                            <input class="m-3 " type="file" accept="image/*" capture="camera" id="camera" />
+                            <!-- <input class="m-3 " type="file" accept="image/*" capture="environment"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 mb-3 " *ngIf="detalleViaje.carga?.movimientos?.length  > 0">
+            <div class="card bg-secondary bg-opacity-10 ">
+                <h4 class="card-header border-bottom mb-3">MOVIMIENTOS</h4>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Id Control de Carga</th>
+                                <th scope="col">Fecha Desde</th>
+                                <th scope="col">Fecha Hasta</th>
+                                <th scope="col">Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let movs of detalleViaje.carga.movimientos; index as i">
+                                <th scope="row"># {{movs.IdControlCargaMovimiento}}</th>
+                                <td>
+                                    {{movs.IdControlCarga}}
+                                </td>
+                                <td>  {{movs.FechaDesde}}</td>
+                                <td>  {{movs.FechaHasta}}</td>
+                                <td>  {{movs.IdMotivo}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 mb-3 " *ngIf="detalleViaje.carga?.Fotos?.length  > 0">
+            <div class="card bg-secondary bg-opacity-10 ">
+                <h4 class="card-header border-bottom mb-3">Fotos</h4>
+                <div class="card-body">
+                    <div class="foto" *ngFor="let foto of detalleViaje.carga?.Fotos">
+                        <img src="{{ detalleViaje.carga?.Fotos }}" id="photo" alt="foto" class="photo m-3 " >
+                    </div>
                 </div>
             </div>
         </div>
 </div>
+
+<ng-template #motivo let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Motivo</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<div class="input-group">
+					<select [(ngModel)]="IdMotivo" name="Motivo">
+                        <option [ngValue]="null" disabled>Seleccione el Motivo</option>
+                        <option *ngFor="let motivo of listMotivos" [ngValue]="motivo.IdControlCargaMotivo">{{motivo.Descripcion}}</option>
+                      </select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Pausar</button>
+	</div>
+</ng-template>
 

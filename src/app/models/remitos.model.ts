@@ -1,8 +1,15 @@
 import { Tiempo } from "./tiempo.model";
 
 export class Remitos{
-    remito:number;	
-    RazonSocial:string;
+    CodCliente:number;
+    Cliente:string;
+    Ruteo: number;
+    Destinatario: number;
+    Empresa: string;
+    Remito: string;
+    Pedido: number;
+    Entrega: number;
+    Peso: number;
     tiempo:Tiempo;
     cargado:boolean;
 }

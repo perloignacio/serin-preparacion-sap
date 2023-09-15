@@ -6,10 +6,11 @@
         </div>
       </div>
 </div>
-<div class="container mt-3">
-    <div class="row">        
-        <div class="col-lg-6 mb-3" *ngFor="let viaje of filtroViajes">
-            <div class="card bg-secondary bg-opacity-10">
+
+<div class="container " >
+    <div class="row m-4">        
+        <div class="col-lg-4 mb-3" *ngFor="let viaje of filtroViajes, let i = index">
+            <div class="card bg-secondary bg-opacity-10 h-100">
             <h3 class="card-header"><b>#{{ viaje.nroviaje }}</b> - {{ viaje.viaje }} <span class="kg badge text-primary fs-5 float-end">{{ viaje.peso }} kg</span></h3>
             <div class="card-body">   
                 <div class="fecha float-end">{{ viaje.fecha | date: 'dd-MM-YYYY'}}</div>                 
@@ -17,34 +18,23 @@
                 <hr>
                 <div class="card-text">
                     <div class="clientes flex-grow-1 flex-shrink-0">
-                        <strong>{{ viaje.clientes }} Clientes (*** Remitos)</strong>
+                        <strong>{{ viaje.clientes }} Clientes ({{ viaje.remitos }} Remitos)</strong>
                     </div>
-                    <div class="obs my-5"><small>observaciones: <br></small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel nemo est iste, mollitia quo deserunt recusandae.</div>
+                    <!-- <div class="obs my-5"><small>observaciones: <br></small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel nemo est iste, mollitia quo deserunt recusandae.</div> -->
                 </div>
                 
-                <div class="text-end me-3 mt-3">
-                        <p>Operadores asignados</p>
+                <div class="text-end me-3 mt-3 " >
+                        <p *ngIf="allCargadores[i].length > 0">Operadores asignados </p>
                         <div class="cargadores d-flex justify-content-end ">
-                            <span class="cargador ">
-                                <a class="rounded-circle text-decoration-none text-white p-2 bg-primary " href="#" data-bs-toggle="tooltip" data-bs-title="Juan Perez">JP</a>
-                            </span><span class="cargador">
-                                <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">PJ</a>
-                            </span>
-                            <span class="cargador">
-                                <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">DH</a>
-                            </span>
-                            <span class="cargador">
-                                <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">NP </a>
-                            </span>
-                            <span class="cargador">
-                                <a class="rounded-circle text-decoration-none text-white p-2 bg-primary">FV </a>
+                            <span class="cargador " *ngFor="let cargActivo of allCargadores[i], let i = index">
+                                <a   class="rounded-circle text-decoration-none text-white p-2 bg-primary " placement="top" ngbTooltip="{{ cargActivo.Nombre}} {{cargActivo.Apellido }}" >{{ cargActivo.Nombre |slice:0:1}}{{ cargActivo.Apellido |slice:0:1 }}</a>
                             </span>
                             <!-- <a href="#" class="btn btn-xs btn-primary btn-rounded">+ more</a> -->
                         </div>
                     </div>
             </div>
             <div class="card-footer d-flex justify-content-evenly">
-                <button routerLink="../detalle/{{ viaje.nroviaje }}" class="btn btn-primary text-white">Ver detalles</button>
+                <button routerLink="../../detalle/{{ viaje.nroviaje }}" class="btn btn-primary text-white">Ver detalles</button>
 
             </div>
         </div></div>

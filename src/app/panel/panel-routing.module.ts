@@ -4,14 +4,21 @@ import { HomeComponent } from './components/home/home.component';
 import { ViajesComponent } from './components/viajes/viajes.component';
 import { DetalleViajeComponent } from './components/detalle-viaje/detalle-viaje.component';
 
+
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     children:[
       {
-        path: 'viajes',
+        path: 'viajes/:estado',
         component: ViajesComponent,
+      },
+      {
+        path: 'viajes',
+        redirectTo: 'viajes/abiertos', 
+        pathMatch: 'full' 
+        
       },
       {
         path: 'detalle/:nroviaje',

@@ -11,12 +11,15 @@ import { JwtInterceptor } from './helpers/jwt.interseptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  NgbCollapse, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoaderComponent } from './loader/loader.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     NgbModule,
     NgbCollapse,
-    NgbCollapseModule
+    NgbCollapseModule,
     
   ],
   

@@ -7,7 +7,8 @@ import { ViajesComponent } from './components/viajes/viajes.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { DetalleViajeComponent } from './components/detalle-viaje/detalle-viaje.component';
 import { FormsModule } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 
@@ -16,13 +17,16 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     ViajesComponent,
     MenuComponent,
-    DetalleViajeComponent
+    DetalleViajeComponent,
+
   ],
   imports: [
     CommonModule,
     PanelRoutingModule,
     FormsModule,
-    NgbCollapseModule
+    NgbCollapseModule,
+    NgbRatingModule,
+    NgbTooltipModule 
   ]
 })
 export class PanelModule { }

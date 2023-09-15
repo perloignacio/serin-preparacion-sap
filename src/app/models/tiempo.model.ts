@@ -3,3 +3,4 @@ export class Tiempo{
         minutos:number;
         segundos:number;
 }
+
