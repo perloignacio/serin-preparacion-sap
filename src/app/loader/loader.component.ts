@@ -8,6 +8,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class LoaderComponent {
 constructor(public shared: SharedService){
-  
+
 }
 }

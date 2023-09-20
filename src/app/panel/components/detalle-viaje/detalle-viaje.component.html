@@ -28,7 +28,7 @@
                                     <div class="card-body">
                                         <div class="operario" *ngFor="let cargador of listCargadores">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="cargardores-{{cargador.Idusuario}}" (click)="cargarOperario(cargador.Idusuario)" [disabled]="cerrado" [checked]="isCargador(cargador.Idusuario)">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="cargardores-{{cargador.Idusuario}}" (click)="cargarOperario(cargador.Idusuario)" [disabled]="cerrado || detalleViaje.carga?.Estado == 3" [checked]="isCargador(cargador.Idusuario)">
                                                 <label class="form-check-label" for="cargardores-{{cargador.Idusuario}}">{{ cargador.Nombre }} {{ cargador.Apellido }}</label>                                    
                                             </div>
                                         </div>
@@ -52,6 +52,7 @@
                                     (click)="colapseRemitos = !colapseRemitos"
                                     [attr.aria-expanded]="!colapseRemitos"
                                     aria-controls="collapseExample"
+                                    [disabled]="!play || detalleViaje.carga?.Estado == 3"
                                 >
                                     Remitos
                                 </button>
@@ -61,7 +62,7 @@
                                     <div class="card-body">
                                         <div class="remitos " *ngFor="let remito of detalleViaje.detalle">                                            
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Remito }}" >
+                                                <input  class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Remito }}" (click)="cargaRemito(remito.Remito)" [disabled]="!play || detalleViaje.carga?.Estado == 3" [checked]="remitoCargado(remito.Remito)">
                                                 <label class="form-check-label" for="remitos-{{ remito.Remito }}">#{{ remito.Remito }} - {{remito.Cliente}}</label>
                                                 
                                             </div>
@@ -100,7 +101,7 @@
                             <ngb-rating [(rate)]="detalleViaje.carga.Calificacion" [max]="3" >
                                 <ng-template let-fill="fill" let-index="index">
                                     
-                                    <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" ></i>
+                                    <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
                                 </ng-template>
                             </ngb-rating>
                         </div>
@@ -111,6 +112,9 @@
                            
 
                             <input class="m-3 " type="file" accept="image/*" capture="camera" id="camera" />
+                            <button class="btn btn-outline-info my-3" (click)="subirFotos()">
+                                Guardar
+                            </button>
                             <!-- <input class="m-3 " type="file" accept="image/*" capture="environment"> -->
                         </div>
                     </div>
@@ -152,8 +156,8 @@
             <div class="card bg-secondary bg-opacity-10 ">
                 <h4 class="card-header border-bottom mb-3">Fotos</h4>
                 <div class="card-body">
-                    <div class="foto" *ngFor="let foto of detalleViaje.carga?.Fotos">
-                        <img src="{{ detalleViaje.carga?.Fotos }}" id="photo" alt="foto" class="photo m-3 " >
+                    <div class="fotos d-flex" >
+                        <img src="{{ fotosURL }}{{ foto }}" class="rounded img-fluid img-thumbnail flex-shrink-1" alt="foto" *ngFor="let foto of listFotos" >
                     </div>
                 </div>
             </div>

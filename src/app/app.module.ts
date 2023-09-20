@@ -31,7 +31,7 @@ import { LoaderComponent } from './loader/loader.component';
     NgbModule,
     NgbCollapse,
     NgbCollapseModule,
-    
+
   ],
   
   providers: [DatePipe,{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],

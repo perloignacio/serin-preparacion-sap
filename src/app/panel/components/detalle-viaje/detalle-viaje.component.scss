@@ -2,9 +2,7 @@
     color: orange;
   }
 
-
-
-  .cargador{
+.cargador{
     width: 35px;
     text-align: center;
 }
@@ -18,4 +16,11 @@
 .cargador a:hover{
     z-index: 2;
     position: relative;
+}
+/****** FOTOS ***/
+.fotos{
+    width: 300px;
+}
+.fotos img{
+    object-fit: cover;
 }

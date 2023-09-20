@@ -14,5 +14,7 @@ export class Viajes{
     detalle:Remitos[];
     cargadores:Cargadores[];
     carga:Carga;
+    remitosCargados: any[]; //  "IdControlCargaRemito": 2, "Remito": "R0007", "NroViaje": "0000000574"
+    segundos: number //385446.6252665
 }
 

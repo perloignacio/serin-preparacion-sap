@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { interval } from 'rxjs/internal/observable/interval';
+import { environment } from 'src/app/environments/environment';
 import { Cargadores } from 'src/app/models/cargadores.model';
 import { Motivos } from 'src/app/models/motivos.model';
 import { Remitos } from 'src/app/models/remitos.model';
@@ -39,12 +40,12 @@ export class DetalleViajeComponent {
   cerrado:boolean = false;
   listCargadores:any[]=[];
   listMotivos:Motivos[]=[];
+  listFotos:any[]=[];
   detalleViaje:Viajes = new Viajes();
   cargadoresActivos:Cargadores[]=[];
   currentRate:number =1;
-
   IdMotivo:number=0;
-
+  fotosURL:string;
 constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, private loader:SharedService){
     this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
     this.LoadData();
@@ -74,8 +75,14 @@ LoadData(){
         this.updateTime();
       }
       this.loader.cargando = false;
-      
+      this.fotosURL = environment.apiUrl + "fotos/";
+
       // this.detalleViaje.carga.Calificacion =2;
+if(this.detalleViaje.carga.Fotos.length >0){
+  this.listFotos= this.detalleViaje.carga.Fotos.split(',');
+  console.log(this.listFotos);
+  
+}
 
       // this.detalleViaje.carga.Fotos ="assets/img/logo_grupo_serin.png";
         }
@@ -88,6 +95,93 @@ LoadData(){
     }
   })
 } 
+calificar(puntaje:number){
+  this.loader.cargando =true;
+
+  let calificacion = {
+    "NroViaje":this.detalleViaje.nroviaje,
+    "IdControlCargaMovimiento":this.detalleViaje.carga?.IdControlCarga, 
+    "calificacion":puntaje+1
+  };
+  
+  this.srvViaje.setCalificacion(calificacion).subscribe((dv)=> {
+    next:{
+      this.detalleViaje = dv;      
+      this.colapseOperarios = true;
+      this.loader.cargando =false;
+
+    }
+  })
+}
+
+cargaRemito(remito:string){
+  this.loader.cargando =true;
+
+  let objRemito = {
+    "Remito":remito,
+    "NroViaje":this.detalleViaje.nroviaje,
+  };
+  if(!this.remitoCargado(remito)){
+   
+    /*** Agregar */
+    this.srvViaje.setRemito(objRemito).subscribe((dv)=> {
+      next:{
+        this.detalleViaje = dv;
+        this.colapseOperarios = true;
+        this.loader.cargando =false;
+  
+      }
+    })
+  }else{
+    /*** Borrar */
+    this.srvViaje.delRemito(objRemito).subscribe((dv)=> {
+      next:{
+        this.detalleViaje = dv;
+        this.colapseOperarios = true;
+         this.loader.cargando =false;
+      }
+    })
+  }
+}
+remitoCargado(remito:string){
+ return this.detalleViaje.remitosCargados?.filter(element => element.Remito === remito).length >0; 
+
+}
+subirFotos(){
+  this.loader.cargando =true;
+
+  let objFoto = {
+    "NroViaje":this.detalleViaje.nroviaje,
+    "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length -1]?.IdControlCargaMovimiento,
+  };
+
+    this.srvViaje.setFoto(objFoto).subscribe((dv)=> {
+      next:{
+        this.detalleViaje = dv;
+        this.colapseOperarios = true;
+        this.loader.cargando =false;
+  
+      }
+    })
+ }
+borrarFoto(foto:string){
+  this.loader.cargando =true;
+
+  let objFoto = {
+    "NroViaje":this.detalleViaje.nroviaje,
+    "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length -1]?.IdControlCargaMovimiento,
+    "Foto":foto
+  };
+
+    this.srvViaje.setFoto(objFoto).subscribe((dv)=> {
+      next:{
+        this.detalleViaje = dv;
+        this.colapseOperarios = true;
+        this.loader.cargando =false;
+  
+      }
+    })
+}
 
 getNombres(){
   this.detalleViaje.cargadores?.forEach(c => {

@@ -13,7 +13,7 @@ export class ViajesService {
     this.endpoint = environment.apiUrl;
 
   }
-  
+  /***** LISTADOS */
   getViajesAbiertos(){
     return this.http.get<Viajes[]>(this.endpoint +'/viajes/abiertos');
   }
@@ -27,10 +27,13 @@ export class ViajesService {
     return this.http.get<Viajes[]>(this.endpoint +'/viajes/Terminados');
   }
 
+  /******** DETALLE UN VIAJE */
   getDetalleViaje(nro:string){
     return this.http.get<Viajes>(this.endpoint +'/viajes/detalle/'+ nro);
   }
 
+
+  /******* MOVIMIENTOS */
   iniciarCarga(Viaje:Viajes){
     return this.http.post<Viajes>(this.endpoint +'/movimientos/iniciar', Viaje);
   }
@@ -45,6 +48,32 @@ export class ViajesService {
     return this.http.post<Viajes>(this.endpoint +'/movimientos/Terminar', Viaje);
   }
 
+/******FIN DE VIAJE */
+
+  setRemito(remito:any){
+    return this.http.post<Viajes>(this.endpoint +'/viajes/setRemitos', remito);
+
+  }
+  delRemito(remito:any){
+    return this.http.post<Viajes>(this.endpoint +'/viajes/delRemitos', remito);
+
+  }
+
+
+  setFoto(foto:any){
+    return this.http.post<Viajes>(this.endpoint +'/movimientos/fotos', foto);
+  }
+  delFoto(foto:any){
+    return this.http.post<Viajes>(this.endpoint +'/movimientos/delFotos', foto);
+    
+  }
+
+  setCalificacion(viaje:any){
+    return this.http.post<Viajes>(this.endpoint +'/movimientos/calificar', viaje);
+  
+  }
+
+  /******AUXILIARES */
   getMotivos(){
     return this.http.get<Motivos[]>(this.endpoint +'/movimientos/motivos');
   }
