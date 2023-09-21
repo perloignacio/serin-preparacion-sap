@@ -106,7 +106,7 @@
                             </ngb-rating>
                         </div>
                     </div>
-                    <div class="foto text-center" *ngIf="detalleViaje.carga?.Estado == 3" >
+                    <div class="addfoto text-center" *ngIf="detalleViaje.carga?.Estado == 3" >
                         Agregar Fotografías
                         <div class="addfotos d-flex gap-3 text-center ">
                            
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12 mb-3 " *ngIf="detalleViaje.carga?.movimientos?.length  > 0">
+        <div class="col-lg-6 mb-3 " *ngIf="detalleViaje.carga?.movimientos?.length  > 0">
             <div class="card bg-secondary bg-opacity-10 ">
                 <h4 class="card-header border-bottom mb-3">MOVIMIENTOS</h4>
                 <div class="card-body">
@@ -130,7 +130,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Id Control de Carga</th>
+                                <th scope="col">Id Ctrl Carga</th>
                                 <th scope="col">Fecha Desde</th>
                                 <th scope="col">Fecha Hasta</th>
                                 <th scope="col">Motivo</th>
@@ -138,12 +138,12 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let movs of detalleViaje.carga.movimientos; index as i">
-                                <th scope="row"># {{movs.IdControlCargaMovimiento}}</th>
-                                <td>
+                                <th scope="row">{{movs.IdControlCargaMovimiento}}</th>
+                                <td align="center">
                                     {{movs.IdControlCarga}}
                                 </td>
-                                <td>  {{movs.FechaDesde}}</td>
-                                <td>  {{movs.FechaHasta}}</td>
+                                <td>  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
+                                <td>  {{movs.FechaHasta | date: 'dd-MM-YY HH:mm:ss'}}</td>
                                 <td>  {{movs.IdMotivo}}</td>
                             </tr>
                         </tbody>
@@ -152,12 +152,17 @@
             </div>
         </div>
 
-        <div class="col-lg-12 mb-3 " *ngIf="detalleViaje.carga?.Fotos?.length  > 0">
+        <div class="col-lg-6 mb-3 " *ngIf="detalleViaje.carga?.Fotos?.length  > 0">
             <div class="card bg-secondary bg-opacity-10 ">
                 <h4 class="card-header border-bottom mb-3">Fotos</h4>
                 <div class="card-body">
-                    <div class="fotos d-flex" >
-                        <img src="{{ fotosURL }}{{ foto }}" class="rounded img-fluid img-thumbnail flex-shrink-1" alt="foto" *ngFor="let foto of listFotos" >
+                    <div class="fotos d-flex " >
+                        <div class="foto position-relative" *ngFor="let foto of listFotos">
+                            <img src="{{ fotosURL }}{{ foto }}" class="rounded img-fluid img-thumbnail flex-shrink-1" alt="foto"  (click)="openFoto(foto,fotoModal)">
+                            <a href="" class="position-absolute">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,3 +191,16 @@
 	</div>
 </ng-template>
 
+<ng-template #fotoModal let-modal>
+	<div class="modal-header">
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+			<div class="mb-3 position-relative">
+				<img class="position-relative img-fluid" src="{{ fotosURL }}{{ loader.fotoModal }}" alt="foto" srcset="">
+			</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Pausar</button>
+	</div>
+</ng-template>

@@ -46,7 +46,7 @@ export class DetalleViajeComponent {
   currentRate:number =1;
   IdMotivo:number=0;
   fotosURL:string;
-constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, private loader:SharedService){
+constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, public loader:SharedService){
     this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
     this.LoadData();
     
@@ -216,6 +216,16 @@ openModal(motivo:any){
     },
   );
 }
+
+openFoto(foto:string,fotoModal:any){
+ this.loader.fotoModal = foto;
+  this.Modal.open(fotoModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg'  }).result.then(
+    (result) => {
+      
+    }
+  );
+}
+
 iniciar(){
 
     const source = interval(1000);

@@ -18,9 +18,22 @@
     position: relative;
 }
 /****** FOTOS ***/
-.fotos{
-    width: 300px;
+.foto{
+    width: 150px;
 }
 .fotos img{
+    width: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
+}
+.fotos a{
+    right: 15px;
+  top: 15px;
+  background: #e9eaeb;
+  padding: 3px;
+  border-radius: 100%;
+  aspect-ratio: 1;
+  color: red;
+  width: 25px;
+  text-align: center;
 }
