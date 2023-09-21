@@ -110,11 +110,13 @@
                         Agregar Fotografías
                         <div class="addfotos d-flex gap-3 text-center ">
                            
-
-                            <input class="m-3 " type="file" accept="image/*" capture="camera" id="camera" />
-                            <button class="btn btn-outline-info my-3" (click)="subirFotos()">
-                                Guardar
-                            </button>
+                            <form enctype="multipart/form-data" (ngSubmit)="subirFotos()">
+                           
+                                <input class="m-3 " type="file" accept="image/*" capture="camera" id="camera"  (change)="onFileSelected($event)"/>
+                                <button type="submit" class="btn btn-outline-info my-3">
+                                    Guardar
+                                </button>
+                            </form>
                             <!-- <input class="m-3 " type="file" accept="image/*" capture="environment"> -->
                         </div>
                     </div>
@@ -159,7 +161,7 @@
                     <div class="fotos d-flex " >
                         <div class="foto position-relative" *ngFor="let foto of listFotos">
                             <img src="{{ fotosURL }}{{ foto }}" class="rounded img-fluid img-thumbnail flex-shrink-1" alt="foto"  (click)="openFoto(foto,fotoModal)">
-                            <a href="" class="position-absolute">
+                            <a role="button" (click)="borrarFoto(foto)" class="position-absolute">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </div>

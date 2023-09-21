@@ -46,6 +46,9 @@ export class DetalleViajeComponent {
   currentRate:number =1;
   IdMotivo:number=0;
   fotosURL:string;
+  selectedFile:any;
+
+
 constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, public loader:SharedService){
     this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
     this.LoadData();
@@ -147,33 +150,48 @@ remitoCargado(remito:string){
  return this.detalleViaje.remitosCargados?.filter(element => element.Remito === remito).length >0; 
 
 }
+onFileSelected(event:any) {
+  this.selectedFile = event.target.files[0];
+  console.log(this.selectedFile);
+}
 subirFotos(){
   this.loader.cargando =true;
+    const form=new FormData();
+
+
 
   let objFoto = {
     "NroViaje":this.detalleViaje.nroviaje,
-    "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length -1]?.IdControlCargaMovimiento,
+    "IdControlCargaMovimiento":this.detalleViaje.carga.IdControlCarga
   };
-
-    this.srvViaje.setFoto(objFoto).subscribe((dv)=> {
+  form.append("objeto",this.loader.convertToJSON(objFoto).objeto);
+  form.append('', this.selectedFile);
+  console.log(form);
+  
+    this.srvViaje.setFoto(form).subscribe((dv)=> {
       next:{
         this.detalleViaje = dv;
         this.colapseOperarios = true;
         this.loader.cargando =false;
+  console.log(this.detalleViaje);
   
       }
     })
  }
 borrarFoto(foto:string){
   this.loader.cargando =true;
+  const form=new FormData();
+
+
 
   let objFoto = {
     "NroViaje":this.detalleViaje.nroviaje,
-    "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length -1]?.IdControlCargaMovimiento,
+    "IdControlCargaMovimiento":this.detalleViaje.carga.IdControlCarga,
     "Foto":foto
   };
+  form.append("objeto",this.loader.convertToJSON(objFoto).objeto);
 
-    this.srvViaje.setFoto(objFoto).subscribe((dv)=> {
+    this.srvViaje.delFoto(form).subscribe((dv)=> {
       next:{
         this.detalleViaje = dv;
         this.colapseOperarios = true;
@@ -346,27 +364,7 @@ getTranscurrido(){
   });
 }
   
-  checkTime(remito:string){
-
-    Swal.fire({
-      title: "Atención",
-      text:"Confirma que este remito ya fue cargado?",
-      icon:'warning',
-      showDenyButton: true,
-      confirmButtonText: 'Aceptar',
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.cargado = true;
-        
-        error: ()=>{
-          }
-      }
-    });
-  }
-
-  cargarOperario(operario:number){
+   cargarOperario(operario:number){
     let Op: any = {
       "IdUsuario":operario,
       "NroViaje":this.viaje     
