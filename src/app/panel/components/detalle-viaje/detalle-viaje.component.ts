@@ -79,15 +79,7 @@ LoadData(){
       }
       this.loader.cargando = false;
       this.fotosURL = environment.apiUrl + "fotos/";
-
-      // this.detalleViaje.carga.Calificacion =2;
-if(this.detalleViaje.carga.Fotos.length >0){
-  this.listFotos= this.detalleViaje.carga.Fotos.split(',');
-  console.log(this.listFotos);
-  
-}
-
-      // this.detalleViaje.carga.Fotos ="assets/img/logo_grupo_serin.png";
+      this.getFotos();
         }
   })
 
@@ -98,6 +90,14 @@ if(this.detalleViaje.carga.Fotos.length >0){
     }
   })
 } 
+
+getFotos(){
+  if(this.detalleViaje.carga.Fotos.length >0){
+    this.listFotos= this.detalleViaje.carga.Fotos.split(',');
+    console.log(this.listFotos);
+    
+  }
+}
 calificar(puntaje:number){
   this.loader.cargando =true;
 
@@ -166,14 +166,14 @@ subirFotos(){
   };
   form.append("objeto",this.loader.convertToJSON(objFoto).objeto);
   form.append('', this.selectedFile);
-  console.log(form);
+ // console.log(form);
   
     this.srvViaje.setFoto(form).subscribe((dv)=> {
       next:{
         this.detalleViaje = dv;
+        this.getFotos();
         this.colapseOperarios = true;
         this.loader.cargando =false;
-  console.log(this.detalleViaje);
   
       }
     })
