@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, Time } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,7 @@ import { CargadoresService } from 'src/app/services/cargadores/cargadores.servic
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { ViajesService } from 'src/app/services/viajes/viajes.service';
 import Swal from 'sweetalert2';
+import { Timer } from 'easytimer.js';
 
 
 @Component({
@@ -47,8 +48,9 @@ export class DetalleViajeComponent {
   IdMotivo:number=0;
   fotosURL:string;
   selectedFile:any;
-
-
+  cronometro:Timer;
+  hasfoto:string;
+  TextMotivo:string;
 constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, public loader:SharedService){
     this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
     this.LoadData();
@@ -58,7 +60,7 @@ constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route
 
 LoadData(){
   this.loader.cargando = true;
-
+  
   this.srvCargadores.getCargadores().subscribe((c)=> {
     next:{
       this.listCargadores = c;
@@ -68,6 +70,7 @@ LoadData(){
   this.srvViaje.getDetalleViaje(this.viaje).subscribe((dv)=> {
     next:{
       this.detalleViaje = dv;
+
       if(this.detalleViaje.carga?.Estado == 1){
         this.iniciar();
         
@@ -80,9 +83,10 @@ LoadData(){
       this.loader.cargando = false;
       this.fotosURL = environment.apiUrl + "fotos/";
       this.getFotos();
-        }
+    }
+    this.cronometro=new Timer({ startValues: { seconds: this.detalleViaje.segundos}});
   })
-
+  
 
   this.srvViaje.getMotivos().subscribe((m)=> {
     next:{
@@ -92,7 +96,7 @@ LoadData(){
 } 
 
 getFotos(){
-  if(this.detalleViaje.carga.Fotos.length >0){
+  if(this.detalleViaje.carga?.Fotos.length >0){
     this.listFotos= this.detalleViaje.carga.Fotos.split(',');
     console.log(this.listFotos);
     
@@ -158,8 +162,6 @@ subirFotos(){
   this.loader.cargando =true;
     const form=new FormData();
 
-
-
   let objFoto = {
     "NroViaje":this.detalleViaje.nroviaje,
     "IdControlCargaMovimiento":this.detalleViaje.carga.IdControlCarga
@@ -173,15 +175,18 @@ subirFotos(){
         this.detalleViaje = dv;
         this.getFotos();
         this.colapseOperarios = true;
+        this.hasfoto = null;
         this.loader.cargando =false;
   
       }
     })
  }
-borrarFoto(foto:string){
-  this.loader.cargando =true;
-  const form=new FormData();
 
+ 
+ borrarFoto(foto:string){
+   this.loader.cargando =true;
+   const form=new FormData();
+   
 
 
   let objFoto = {
@@ -205,11 +210,7 @@ getNombres(){
   this.detalleViaje.cargadores?.forEach(c => {
    
     this.listCargadores.filter(element =>{
-    //  console.log(element.Idusuario, c.IdUsuario);
-      
-      if(element.Idusuario == c.IdUsuario){
-        // console.log(element);
-        
+      if(element.Idusuario == c.IdUsuario){        
         this.cargadoresActivos.push(element);
       }
     }
@@ -218,6 +219,20 @@ getNombres(){
 
 }
 
+getMotivo(id:number){
+  this.TextMotivo = null;
+  this.detalleViaje.carga?.movimientos.forEach(c => {
+   
+     this.listMotivos.filter(element =>{
+      if(element.IdControlCargaMotivo === id){                
+        this.TextMotivo = element.Descripcion;
+      }
+    }
+    );
+  }); 
+  return this.TextMotivo;
+   ;
+ }
 
 isCargador(id:number){
  return this.detalleViaje.cargadores?.filter(element => element.IdUsuario === id).length >0; 
@@ -249,10 +264,11 @@ iniciar(){
     const source = interval(1000);
     if(!this.play){
       /**** play */
+      if(this.detalleViaje.cargadores.length > 0){ 
           this.loader.cargando =true;
           this.play= true
+          
           if(this.detalleViaje.carga != null){
-            this.transcurrido = 0;
             if(this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length -1]?.FechaHasta != null){
               let reanudar: any = {
                 "NroViaje":this.detalleViaje.nroviaje,
@@ -265,26 +281,42 @@ iniciar(){
                 this.colapseOperarios = true;
                 this.loader.cargando =false;
 
+                this.cronometro.start({ startValues: { seconds: this.detalleViaje.segundos}})
+         
+          
               }
             })
             }
           }else{
-            this.tiempo = new Date();
-            this.srvViaje.iniciarCarga(this.detalleViaje).subscribe((dv)=> {
-              next:{
-                this.detalleViaje = dv;
-                this.colapseOperarios = true;
-                this.loader.cargando =false;
+            
+              this.tiempo = new Date();
+              this.srvViaje.iniciarCarga(this.detalleViaje).subscribe((dv)=> {
+                next:{
+                  this.detalleViaje = dv;
+                  this.colapseOperarios = true;
+                  this.loader.cargando =false;
 
-              }
-            })
+                  this.cronometro.start({ startValues: { seconds: this.detalleViaje.segundos}})
+  
+  
+                }
+              });
+           
+                
+            
           }
-
+        }else{
+          Swal.fire({
+            title: "Atención",
+            html:"Debe asignar al menos un operario para la carga",
+            icon:'warning',
+          });
+        }
     }else{
       /*** pausa */
       this.loader.cargando =true;
 
-      console.log(this.detalleViaje);
+
       let pause: any = {
         "NroViaje":this.detalleViaje.nroviaje,
         "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos?.length -1]?.IdControlCargaMovimiento,
@@ -298,9 +330,13 @@ iniciar(){
         this.srvViaje.PausarCarga(pause).subscribe((dv)=> {
           next:{
             this.detalleViaje = dv;
+            this.cronometro.pause();
             this.colapseOperarios = true;
             this.loader.cargando =false;
+           
 
+
+  
           }
         }) 
      }
@@ -309,6 +345,7 @@ iniciar(){
     source.subscribe(val => { 
       if(this.play){
         this.updateTime();
+       
       }
     })
 
@@ -339,29 +376,13 @@ detener(){
           this.detalleViaje = dv;
           this.colapseOperarios = false;
           this.cerrado =true;
-          this.loader.cargando = false
-
+          this.loader.cargando = false;
+          this.cronometro.stop();
         }
       })  
     }
   });
   
-}
-getTranscurrido(){
-  this.transcurrido=0;
-  this.detalleViaje.carga.movimientos?.forEach(element => {
-    let hasta = new Date(element.FechaHasta);
-    let desde = new Date(element.FechaDesde);
-    let comp = new Date(1969,11,31);
-    comp.setHours(21,0,0);
-  //  console.log( hasta != comp);
-
-    if(hasta.getTime() == comp.getTime()){
-      hasta = new Date();
-    }
-      this.transcurrido += hasta.getTime() - desde.getTime();
-    
-  });
 }
   
    cargarOperario(operario:number){
@@ -401,30 +422,34 @@ getTranscurrido(){
       
   }
 
+
   updateTime() {
-    if(this.tiempo == null){
-      this.tiempo = new Date();
-      this.transcurrido = 0;
-    }
-    const now = new Date();
-    this.getTranscurrido();
+//console.log(crono.getTimeValues());
+
+    // if(this.tiempo == null){
+    //   this.tiempo = new Date();
+     // this.transcurrido = 0;
+    // }
+    // const now = new Date();
+   // this.getTranscurrido();
     
    // this.marca = new Date(this.tiempo); 
-    const diff =  now.getTime() - this.tiempo.getTime() + this.transcurrido;
+  //  const diff =  now.getTime() - this.tiempo.getTime();
+    // const diff =  0;
    // console.log(diff)
 
     // Cálculos para sacar lo que resta hasta ese tiempo objetivo / final
-    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const horas = Math.floor(diff / (1000 * 60 * 60));
-    const mins = Math.floor(diff / (1000 * 60));
-    const secs = Math.floor(diff / 1000);
+    // const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) ;
+    // const horas = Math.floor(diff / (1000 * 60 * 60));
+    // const mins = Math.floor(diff / (1000 * 60));
+    // const secs = Math.floor(diff / 1000);
     
     // La diferencia que se asignará para mostrarlo en la pantalla
-     this.dias = dias;
-     this.horas = horas - dias * 24;
-     this.minutos = mins - horas * 60;
-     this.segundos = secs - mins * 60;
+    //  this.dias = dias + crono.getTimeValues().days;
+    //  this.horas = horas - dias * 24 + crono.getTimeValues().hours;
+    //  this.minutos = mins - horas * 60 + crono.getTimeValues().minutes;
+    //  this.segundos = secs - mins * 60 + crono.getTimeValues().seconds;
   //  console.log(this.dias, this.horas , this.minutos, this.segundos);
-    
+  
   }
 }

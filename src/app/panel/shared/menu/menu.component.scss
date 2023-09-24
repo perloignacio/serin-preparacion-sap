@@ -92,13 +92,12 @@ a:focus {
     display: block;
 }
 
-#sidebar ul li a:hover,#sidebar ul li a:hover i {
+ a:hover, a:hover i {
     color: #567682;
     background: #fff;
 }
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
+.active {
     color: #fff;
     background: #567682;
 }
