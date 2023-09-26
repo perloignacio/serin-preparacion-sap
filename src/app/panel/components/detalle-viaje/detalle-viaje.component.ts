@@ -200,6 +200,7 @@ subirFotos(){
       next:{
         this.detalleViaje = dv;
         this.colapseOperarios = true;
+        this.getFotos();
         this.loader.cargando =false;
   
       }

@@ -79,8 +79,8 @@
                        
                     </div>
                 </div>
-                <div class="card-footer card-footer d-flex justify-content-evenly sticky-bottom bottom-0 start-0 w-100 bg-secondary-subtle d-flex justify-content-evenly z-2">
-                    <div class="cronometro text-center" *ngIf=" detalleViaje.carga?.Estado != 3">
+                <div class="card-footer card-footer sticky-bottom bottom-0 start-0 w-100 bg-secondary-subtle d-flex justify-content-evenly z-2">
+                    <div class="cronometro text-center col-md-12" *ngIf=" detalleViaje.carga?.Estado != 3">
                         <h4><b><small *ngIf="cronometro?.getTimeValues().days>0">{{ cronometro?.getTimeValues().days| number:'2.0' }} días</small></b> {{ cronometro?.getTimeValues().hours | number:'2.0' }}:{{ cronometro?.getTimeValues().minutes | number:'2.0' }}:{{ cronometro?.getTimeValues().seconds | number:'2.0' }}</h4>
                         <div class="botones d-flex justify-content-center gap-2">
                             <button  class=" btn text-success" placement="bottom" ngbTooltip="Iniciar / Pausar" [disabled]="cerrado">
@@ -91,33 +91,34 @@
                             </button>
                         </div>
                     </div>
-                    <div class="calificacion text-center" *ngIf="detalleViaje.carga?.Estado == 3"> 
-                        Calificación
-                        <div class="stars d-flex gap-3 text-center">
-                            <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                            <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                            <a href=""><span class="fa fa-star fs-4 "></span></a> -->
-
-                            <ngb-rating [(rate)]="detalleViaje.carga.Calificacion" [max]="3" >
-                                <ng-template let-fill="fill" let-index="index">
-                                    
-                                    <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
-                                </ng-template>
-                            </ngb-rating>
+                    <div class="row w-100 overflow-hidden" *ngIf="detalleViaje.carga?.Estado == 3">
+                        <div class="calificacion text-center col-md-6" >
+                            Calificación
+                            <div class="stars text-center">
+                                <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
+                                <a href=""><span class="fa fa-star fs-4 checked"></span></a>
+                                <a href=""><span class="fa fa-star fs-4 "></span></a> -->
+                                <ngb-rating [(rate)]="detalleViaje.carga.Calificacion" [max]="3" class="text-center">
+                                    <ng-template let-fill="fill" let-index="index">
+                        
+                                        <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
+                                    </ng-template>
+                                </ngb-rating>
+                            </div>
                         </div>
-                    </div>
-                    <div class="addfoto text-center" *ngIf="detalleViaje.carga?.Estado == 3" >
-                        Agregar Fotografías
-                        <div class="addfotos d-flex gap-3 text-center ">
-                           
-                            <form enctype="multipart/form-data" (ngSubmit)="subirFotos()">
-                           
-                                <input class="m-3 " [(ngModel)]="hasfoto" name="hasfoto" type="file" accept="image/*" capture="camera" id="camera"  (change)="onFileSelected($event)" />
-                                <button type="submit" class="btn btn-outline-info my-3">
-                                    Guardar
-                                </button>
-                            </form>
-                            <!-- <input class="m-3 " type="file" accept="image/*" capture="environment"> -->
+                        <div class="addfoto col-md-6 text-center" >
+                            Agregar Fotografías
+                            <div class="addfotos text-center ">
+                        
+                                <form enctype="multipart/form-data" (ngSubmit)="subirFotos()">
+                        
+                                    <input class="m-3 " [(ngModel)]="hasfoto" name="hasfoto" type="file" accept="image/*" capture="camera" id="camera"  (change)="onFileSelected($event)" />
+                                    <button type="submit" class="btn btn-outline-info my-3">
+                                        Guardar
+                                    </button>
+                                </form>
+                                <!-- <input class="m-3 " type="file" accept="image/*" capture="environment"> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,8 +132,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Id Ctrl Carga</th>
+                                <th class=" d-none d-md-table-cell" scope="col ">#</th>
+                                <th class=" d-none d-md-table-cell" scope="col">Id Ctrl Carga</th>
                                 <th scope="col">Fecha Desde</th>
                                 <th scope="col">Fecha Hasta</th>
                                 <th scope="col">Motivo</th>
@@ -140,8 +141,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let movs of detalleViaje.carga.movimientos; index as i">
-                                <th scope="row">{{movs.IdControlCargaMovimiento}}</th>
-                                <td align="center">
+                                <th class=" d-none d-md-table-cell" scope="row">{{movs.IdControlCargaMovimiento}}</th>
+                                <td class=" d-none d-md-table-cell" align="center">
                                     {{movs.IdControlCarga}}
                                 </td>
                                 <td>  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
@@ -158,7 +159,7 @@
             <div class="card bg-secondary bg-opacity-10 ">
                 <h4 class="card-header border-bottom mb-3">Fotos</h4>
                 <div class="card-body">
-                    <div class="fotos d-flex " >
+                    <div class="fotos fotos d-flex flex-wrap justify-content-center" >
                         <div class="foto position-relative" *ngFor="let foto of listFotos">
                             <img src="{{ fotosURL }}{{ foto }}" class="rounded img-fluid img-thumbnail flex-shrink-1" alt="foto"  (click)="openFoto(foto,fotoModal)">
                             <a role="button" (click)="borrarFoto(foto)" class="position-absolute" placement="top" ngbTooltip="Eliminar foto">

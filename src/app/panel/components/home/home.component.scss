@@ -3,3 +3,10 @@
     min-height: 100vh;
 }
 
+@media all and (max-width:760px) {
+    .content{
+        width: 80%;
+    }
+    
+}
+
