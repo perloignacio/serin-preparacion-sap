@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cargadores } from 'src/app/models/cargadores.model';
 import { Viajes } from 'src/app/models/viajes.model';
 import { CargadoresService } from 'src/app/services/cargadores/cargadores.service';
@@ -27,7 +27,7 @@ export class ViajesComponent implements OnInit{
   allCargadores:any[]=[];
 
 
-  constructor(private srvViajes: ViajesService, private srvCargadores:CargadoresService,private est:ActivatedRoute, private loader:SharedService){
+  constructor(private srvViajes: ViajesService, private srvCargadores:CargadoresService,private est:ActivatedRoute, private loader:SharedService,private router:Router){
     
 
 }
@@ -101,6 +101,10 @@ loadData(){
 
 }
 
+detalle(nroviaje:number){
+  this.router.navigate(["panel/detalle/",nroviaje]);
+  
+}
 refreshData(){
   this.filtroViajes=this.viajes;
   this.loader.cargando = false;

@@ -4,3 +4,18 @@ body{
 }
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+br:before { content: "\A"; white-space: pre-line }
+h1{margin:0px !important;}
+h2{margin:0px !important;}
+h3{margin:0px !important;}
+h4{margin:0px !important;}
+h5{margin:0px !important;}
+textarea:focus, input:focus{
+    outline: none;
+}
+.btn-primary{background-color: #233640;background-image: none;border:0px}
+body {font-family:Lato !important;}
+.modal-dialog .modal-content {
+    background-color: #f2f1f1 !important;
+}
+h3.card-header{font-weight: 300;font-size: 20px !important;}

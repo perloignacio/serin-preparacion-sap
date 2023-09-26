@@ -9,35 +9,46 @@
           </div>
     </div>
     <div class="row my-4">        
-        <div class="col-lg-4 mb-3" *ngFor="let viaje of filtroViajes, let i = index">
-            <div class="card bg-secondary bg-opacity-10 h-100">
-            <h3 class="card-header"><b>#{{ viaje.nroviaje }}</b> - {{ viaje.viaje }} <span class="kg badge text-primary fs-5 float-end">{{ viaje.peso }} kg</span></h3>
-            <div class="card-body">   
-                <div class="fecha float-end">{{ viaje.fecha | date: 'dd-MM-YYYY'}}</div>                 
-                <h5 class="card-title mb-3"><b>#{{ viaje.codtransporte }}</b> - {{ viaje.transporte }}</h5>
-                <hr>
-                <div class="card-text">
-                    <div class="clientes flex-grow-1 flex-shrink-0">
-                        <strong>{{ viaje.clientes }} Clientes ({{ viaje.remitos }} Remitos)</strong>
-                    </div>
-                    <!-- <div class="obs my-5"><small>observaciones: <br></small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel nemo est iste, mollitia quo deserunt recusandae.</div> -->
-                </div>
-                
-                <div class="text-end me-3 mt-3 " >
-                        <p *ngIf="allCargadores[i].length > 0">Operadores asignados </p>
-                        <div class="cargadores d-flex justify-content-end ">
-                            <span class="cargador " *ngFor="let cargActivo of allCargadores[i], let i = index">
-                                <a   class="rounded-circle text-decoration-none text-white p-2 bg-primary " placement="top" ngbTooltip="{{ cargActivo.Nombre}} {{cargActivo.Apellido }}" >{{ cargActivo.Nombre |slice:0:1}}{{ cargActivo.Apellido |slice:0:1 }}</a>
-                            </span>
-                            <!-- <a href="#" class="btn btn-xs btn-primary btn-rounded">+ more</a> -->
+        <div class="col-lg-4 mb-5" *ngFor="let viaje of filtroViajes, let i = index">
+            <div class="card shadow" role="button" (click)="detalle(viaje.nroviaje)">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-9">
+                            <small><b>{{ viaje.nroviaje }}</b></small> - <h3>{{ viaje.viaje }}</h3>
                         </div>
+                        <div class="col-3">
+                            <span class="kg badge text-primary fs-5 float-end"><small>{{ viaje.peso }} kg</small></span>
+                        </div>
+                    </div> 
+                </div>
+            
+                <div class="card-body">
+                    <div *ngIf="viaje.codtransporte">
+                        <div class="fecha float-end">{{ viaje.fecha | date: 'dd-MM-YYYY'}}</div>                 
+                        <h5 class="card-title mb-3"><b>#{{ viaje.codtransporte }}</b> - {{ viaje.transporte }}</h5>
+                        <hr>
+                    </div>   
+                    <div class="card-text">
+                        <div class="clientes flex-grow-1 flex-shrink-0">
+                            <strong>{{ viaje.clientes }} Clientes</strong>
+                        </div>
+                        <!-- <div class="obs my-5"><small>observaciones: <br></small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel nemo est iste, mollitia quo deserunt recusandae.</div> -->
                     </div>
+                    
+                    <div class="text-end me-3 mt-3 " >
+                            <p *ngIf="allCargadores[i].length > 0">Operadores asignados </p>
+                            <div class="cargadores d-flex justify-content-end ">
+                                <span class="cargador " *ngFor="let cargActivo of allCargadores[i], let i = index">
+                                    <a   class="rounded-circle text-decoration-none text-white p-2 bg-primary " placement="top" ngbTooltip="{{ cargActivo.Nombre}} {{cargActivo.Apellido }}" >{{ cargActivo.Nombre |slice:0:1}}{{ cargActivo.Apellido |slice:0:1 }}</a>
+                                </span>
+                                <!-- <a href="#" class="btn btn-xs btn-primary btn-rounded">+ more</a> -->
+                            </div>
+                        </div>
+                </div>
+           
+               
             </div>
-            <div class="card-footer d-flex justify-content-evenly">
-                <button routerLink="../../detalle/{{ viaje.nroviaje }}" class="btn btn-primary text-white">Ver detalles</button>
-
-            </div>
-        </div></div>
+        </div>
     </div>
 </div>
 
