@@ -70,21 +70,21 @@ LoadData(){
   this.srvViaje.getDetalleViaje(this.viaje).subscribe((dv)=> {
     next:{
       this.detalleViaje = dv;
-
+      this.cronometro=new Timer({ startValues: { seconds: this.detalleViaje.segundos}});
       if(this.detalleViaje.carga?.Estado == 1){
-        this.iniciar();
-        
+        this.cronometro.start({ startValues: { seconds: this.detalleViaje.segundos}})
+        this.play=true;
       }
       if(this.detalleViaje.cargadores.length > 0){
         
         this.getNombres();
-        this.updateTime();
+        //this.updateTime();
       }
       this.loader.cargando = false;
       this.fotosURL = environment.apiUrl + "fotos/";
       this.getFotos();
     }
-    this.cronometro=new Timer({ startValues: { seconds: this.detalleViaje.segundos}});
+   
   })
   
 
@@ -322,7 +322,7 @@ iniciar(){
         "NroViaje":this.detalleViaje.nroviaje,
         "IdControlCargaMovimiento":this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos?.length -1]?.IdControlCargaMovimiento,
         "IdMotivo":0   
-    };
+      };
        pause.IdMotivo = this.IdMotivo;
       
       if(pause.IdMotivo != 0){
