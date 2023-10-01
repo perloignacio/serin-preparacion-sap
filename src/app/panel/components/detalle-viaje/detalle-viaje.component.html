@@ -52,7 +52,6 @@
                                     (click)="colapseRemitos = !colapseRemitos"
                                     [attr.aria-expanded]="!colapseRemitos"
                                     aria-controls="collapseExample"
-                                    [disabled]="!play || detalleViaje.carga?.Estado == 3"
                                 >
                                     Remitos
                                 </button>
@@ -94,14 +93,21 @@
                     <div class="row w-100 overflow-hidden" *ngIf="detalleViaje.carga?.Estado == 3">
                         <div class="calificacion text-center col-md-6" >
                             Calificación
-                            <div class="stars text-center">
+                            <div class="stars text-center mt-2">
                                 <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
                                 <a href=""><span class="fa fa-star fs-4 checked"></span></a>
                                 <a href=""><span class="fa fa-star fs-4 "></span></a> -->
-                                <ngb-rating [(rate)]="detalleViaje.carga.Calificacion" [max]="3" class="text-center">
+                                <ngb-rating [(rate)]="detalleViaje.carga.Calificacion"  [max]="3" class="rating d-flex flex-wrap justify-content-lg-center gap-2 justify-content-md-start justify-content-xs-start w-100">
                                     <ng-template let-fill="fill" let-index="index">
-                        
-                                        <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
+
+                                      <p class="shadow pe-3 w-100">
+                                        <i class="fa fa-star fs-4 p-2  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
+                                            {{(index === 0) ? 'sin observaciones' : (index === 1) ? 'una observación' : 'varias observaciones'}} </p>
+                                        
+                                        <!-- <span class="badge rounded-pill bg-secondary">
+                                        <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i><br>
+                                        {{(index === 0) ? '0: Sin observaciones' : (index === 1) ? '1: Una observacion' : '2: Varias Observaciones'}}
+                                        </span> -->
                                     </ng-template>
                                 </ngb-rating>
                             </div>
