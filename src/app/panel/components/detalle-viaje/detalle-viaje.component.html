@@ -97,12 +97,19 @@
                                 <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
                                 <a href=""><span class="fa fa-star fs-4 checked"></span></a>
                                 <a href=""><span class="fa fa-star fs-4 "></span></a> -->
-                                <ngb-rating [(rate)]="detalleViaje.carga.Calificacion"  [max]="3" class="rating d-flex flex-wrap justify-content-lg-center gap-2 justify-content-md-start justify-content-xs-start w-100">
+                                <ngb-rating [(rate)]="detalleViaje.carga.Calificacion"  [max]="3" class="rating d-flex  justify-content-lg-center gap-2 justify-content-md-start justify-content-xs-start w-100">
                                     <ng-template let-fill="fill" let-index="index">
 
-                                      <p class="shadow pe-3 w-100">
-                                        <i class="fa fa-star fs-4 p-2  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i>
-                                            {{(index === 0) ? 'sin observaciones' : (index === 1) ? 'una observación' : 'varias observaciones'}} </p>
+                                        <span class="fa-stack fa-1x fs-4" (click)="calificar(index)">
+                                            <i class=" fa-stack-2x {{fill === 100 ? 'checked fa fa-star' : ''}}"></i>
+                                            <span class="fa fa-stack-1x {{fill === 100 ? 'text-white' : ''}}">{{ index }}</span>
+                                          </span>
+                                        <!-- <div class="circulo rounded-circle  {{fill === 100 ? 'checked border-1 border-warning bg-warning text-white' : ''}}" >
+                                            <span class="fs-2 ">{{ index }}</span>
+
+                                        </div> -->
+
+                         
                                         
                                         <!-- <span class="badge rounded-pill bg-secondary">
                                         <i class="fa fa-star fs-3 m-3  {{fill === 100 ? 'checked' : ''}}" (click)="calificar(index)" ></i><br>
