@@ -8,7 +8,7 @@ export class Remitos{
     Empresa: string;
     Remito: string;
     Pedido: number;
-    Entrega: number;
+    Entrega: string;
     Peso: number;
     tiempo:Tiempo;
     cargado:boolean;

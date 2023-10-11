@@ -61,8 +61,8 @@
                                     <div class="card-body">
                                         <div class="remitos " *ngFor="let remito of detalleViaje.detalle">                                            
                                             <div class="form-check form-switch">
-                                                <input  class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Remito }}" (click)="cargaRemito(remito.Remito)" [disabled]="!play || detalleViaje.carga?.Estado == 3" [checked]="remitoCargado(remito.Remito)">
-                                                <label class="form-check-label" for="remitos-{{ remito.Remito }}">#{{ remito.Remito }} - {{remito.Cliente}}</label>
+                                                <input  class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Entrega }}" (click)="cargaRemito(remito.Entrega)" [disabled]="!play || detalleViaje.carga?.Estado == 3" [checked]="remitoCargado(remito.Entrega)">
+                                                <label class="form-check-label" for="remitos-{{ remito.Entrega }}">#{{ remito.Entrega }} - {{remito.Cliente}}</label>
                                                 
                                             </div>
                                         </div>

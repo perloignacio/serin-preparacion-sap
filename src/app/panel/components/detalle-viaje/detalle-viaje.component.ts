@@ -121,14 +121,14 @@ calificar(puntaje:number){
   })
 }
 
-cargaRemito(remito:string){
+cargaRemito(entrega:string){
   this.loader.cargando =true;
 
   let objRemito = {
-    "Remito":remito,
+    "Entrega":entrega,
     "NroViaje":this.detalleViaje.nroviaje,
   };
-  if(!this.remitoCargado(remito)){
+  if(!this.remitoCargado(entrega)){
    
     /*** Agregar */
     this.srvViaje.setRemito(objRemito).subscribe((dv)=> {
@@ -150,8 +150,8 @@ cargaRemito(remito:string){
     })
   }
 }
-remitoCargado(remito:string){
- return this.detalleViaje.remitosCargados?.filter(element => element.Remito === remito).length >0; 
+remitoCargado(entrega:string){
+ return this.detalleViaje.remitosCargados?.filter(element => element.Entrega === entrega).length >0; 
 
 }
 onFileSelected(event:any) {
