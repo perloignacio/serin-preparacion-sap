@@ -24,18 +24,13 @@ export class DetalleViajeComponent {
   colapseOperarios = false;
   colapseRemitos = false;
 
-  tiempo:Date;
-  transcurrido:number;
+  transcurrido:Timer;
   play:boolean=false;
-  marca: Date = new Date();
   cliente:Remitos= new Remitos();
   noPlay:boolean = false;
   noStop:boolean = false;
 
-  dias: number = 0;
-  horas: number = 0;
-  minutos: number = 0;
-  segundos: number = 0;
+
   cargado:boolean = false;
   viaje:string;
   cerrado:boolean = false;
@@ -290,7 +285,6 @@ iniciar(){
             }
           }else{
             
-              this.tiempo = new Date();
               this.srvViaje.iniciarCarga(this.detalleViaje).subscribe((dv)=> {
                 next:{
                   this.detalleViaje = dv;
@@ -327,7 +321,6 @@ iniciar(){
       
       if(pause.IdMotivo != 0){
         this.play= false;
-        this.tiempo = new Date();    
         this.srvViaje.PausarCarga(pause).subscribe((dv)=> {
           next:{
             this.detalleViaje = dv;
@@ -341,16 +334,7 @@ iniciar(){
           }
         }) 
      }
-    }
-
-    source.subscribe(val => { 
-      if(this.play){
-        this.updateTime();
-       
-      }
-    })
-
-    
+    }    
   }
 
 
@@ -424,33 +408,12 @@ detener(){
   }
 
 
-  updateTime() {
-//console.log(crono.getTimeValues());
-
-    // if(this.tiempo == null){
-    //   this.tiempo = new Date();
-     // this.transcurrido = 0;
-    // }
-    // const now = new Date();
-   // this.getTranscurrido();
-    
-   // this.marca = new Date(this.tiempo); 
-  //  const diff =  now.getTime() - this.tiempo.getTime();
-    // const diff =  0;
-   // console.log(diff)
-
-    // Cálculos para sacar lo que resta hasta ese tiempo objetivo / final
-    // const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) ;
-    // const horas = Math.floor(diff / (1000 * 60 * 60));
-    // const mins = Math.floor(diff / (1000 * 60));
-    // const secs = Math.floor(diff / 1000);
-    
-    // La diferencia que se asignará para mostrarlo en la pantalla
-    //  this.dias = dias + crono.getTimeValues().days;
-    //  this.horas = horas - dias * 24 + crono.getTimeValues().hours;
-    //  this.minutos = mins - horas * 60 + crono.getTimeValues().minutes;
-    //  this.segundos = secs - mins * 60 + crono.getTimeValues().seconds;
-  //  console.log(this.dias, this.horas , this.minutos, this.segundos);
-  
+  calcularTiempo(segundos:number){
+    this.transcurrido=new Timer({ startValues: { seconds: segundos}});
+    let dias = "";
+    if(this.transcurrido.getTimeValues().days > 0){
+      dias = this.transcurrido.getTimeValues().days.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + 'días ';
+    }
+    return dias + this.transcurrido.getTimeValues().hours.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + ':' +this.transcurrido.getTimeValues().minutes.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + ':' +this.transcurrido.getTimeValues().seconds.toLocaleString('es-AR',{minimumIntegerDigits: 2});
   }
 }

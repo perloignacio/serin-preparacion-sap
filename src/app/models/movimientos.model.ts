@@ -4,5 +4,6 @@ export class Movimientos{
     FechaDesde: string;
     FechaHasta: string;
     IdMotivo: number;
+    segundos: number;
 }
 

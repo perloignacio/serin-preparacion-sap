@@ -94,20 +94,18 @@
                         <div class="calificacion text-center col-md-6" >
                             Calificación
                             <div class="stars text-center mt-2">
-                                <!-- <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                                <a href=""><span class="fa fa-star fs-4 checked"></span></a>
-                                <a href=""><span class="fa fa-star fs-4 "></span></a> -->
+
                                 <ngb-rating [(rate)]="detalleViaje.carga.Calificacion"  [max]="3" class="rating d-flex  justify-content-lg-center gap-2 justify-content-md-start justify-content-xs-start w-100">
                                     <ng-template let-fill="fill" let-index="index">
 
-                                        <span class="fa-stack fa-1x fs-4" (click)="calificar(index)">
+                                        <!-- <span class="fa-stack fa-1x fs-4" (click)="calificar(index)">
                                             <i class=" fa-stack-2x {{fill === 100 ? 'checked fa fa-star' : ''}}"></i>
                                             <span class="fa fa-stack-1x {{fill === 100 ? 'text-white' : ''}}">{{ index }}</span>
-                                          </span>
-                                        <!-- <div class="circulo rounded-circle  {{fill === 100 ? 'checked border-1 border-warning bg-warning text-white' : ''}}" >
+                                          </span> -->
+                                        <div class="circulo rounded-circle  {{detalleViaje.carga.Calificacion-1 === index ? 'checked border-1 border-info bg-info text-white' : ''}}" (click)="calificar(index)">
                                             <span class="fs-2 ">{{ index }}</span>
 
-                                        </div> -->
+                                        </div>
 
                          
                                         
@@ -149,6 +147,7 @@
                                 <th class=" d-none d-md-table-cell" scope="col">Id Ctrl Carga</th>
                                 <th scope="col">Fecha Desde</th>
                                 <th scope="col">Fecha Hasta</th>
+                                <th scope="col">Tiempo</th>
                                 <th scope="col">Motivo</th>
                             </tr>
                         </thead>
@@ -160,6 +159,8 @@
                                 </td>
                                 <td>  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
                                 <td>  {{movs.FechaHasta | date: 'dd-MM-YY HH:mm:ss'}}</td>
+                                <td *ngIf="movs.FechaHasta"> {{ calcularTiempo(movs.segundos) }}</td>
+                                <td *ngIf="!movs.FechaHasta"> </td>
                                 <td> {{getMotivo(movs.IdMotivo)}}</td>
                             </tr>
                         </tbody>
