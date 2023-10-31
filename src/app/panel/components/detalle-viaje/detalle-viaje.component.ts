@@ -46,6 +46,8 @@ export class DetalleViajeComponent {
   cronometro:Timer;
   hasfoto:string;
   TextMotivo:string;
+  todos:boolean=false;
+  subtotal:number=0;
 constructor(public time: DatePipe,private nroViaje:ActivatedRoute, private route: Router,private srvViaje:ViajesService, private srvCargadores: CargadoresService,private Modal: NgbModal, public loader:SharedService){
     this.viaje = (this.nroViaje.snapshot.paramMap.get('nroviaje'));
     this.LoadData();
@@ -118,34 +120,51 @@ calificar(puntaje:number){
 
 cargaRemito(entrega:string){
   this.loader.cargando =true;
-
   let objRemito = {
     "Entrega":entrega,
     "NroViaje":this.detalleViaje.nroviaje,
   };
-  if(!this.remitoCargado(entrega)){
-   
-    /*** Agregar */
-    this.srvViaje.setRemito(objRemito).subscribe((dv)=> {
-      next:{
-        this.detalleViaje = dv;
-        this.colapseOperarios = true;
-        this.loader.cargando =false;
-  
-      }
-    })
+
+  if(entrega == "TODOS"){
+    this.detalleViaje.detalle.forEach(element => {
+      objRemito.Entrega=element.Entrega;
+      this.srvViaje.setRemito(objRemito).subscribe((dv)=> {
+        next:{
+          this.detalleViaje = dv;
+          this.colapseOperarios = true;
+          this.loader.cargando =false;
+        }
+        this.todos=true;
+      });
+    });
   }else{
-    /*** Borrar */
-    this.srvViaje.delRemito(objRemito).subscribe((dv)=> {
-      next:{
-        this.detalleViaje = dv;
-        this.colapseOperarios = true;
-         this.loader.cargando =false;
-      }
-    })
+    if(!this.remitoCargado(entrega)){
+     
+      /*** Agregar */
+      this.srvViaje.setRemito(objRemito).subscribe((dv)=> {
+        next:{
+          this.detalleViaje = dv;
+          this.colapseOperarios = true;
+          this.loader.cargando =false;
+    
+        }
+      })
+          }else{
+      /*** Borrar */
+      this.srvViaje.delRemito(objRemito).subscribe((dv)=> {
+        next:{
+          this.detalleViaje = dv;
+          this.colapseOperarios = true;
+           this.loader.cargando =false;
+           this.todos=false;
+        }
+      });
+      
+    }
   }
 }
 remitoCargado(entrega:string){
+
  return this.detalleViaje.remitosCargados?.filter(element => element.Entrega === entrega).length >0; 
 
 }
@@ -415,5 +434,20 @@ detener(){
       dias = this.transcurrido.getTimeValues().days.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + 'días ';
     }
     return dias + this.transcurrido.getTimeValues().hours.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + ':' +this.transcurrido.getTimeValues().minutes.toLocaleString('es-AR',{minimumIntegerDigits: 2}) + ':' +this.transcurrido.getTimeValues().seconds.toLocaleString('es-AR',{minimumIntegerDigits: 2});
+  }
+
+  calcularSubtotal(i:number){
+    this.subtotal=0;
+      for (let index = 0; index <= i; index++) {
+        this.subtotal += this.detalleViaje.carga.movimientos[index].segundos
+      }
+      return this.calcularTiempo(this.subtotal);
+
+  }
+  calcularTotal(){
+    var inicio = new Date(this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length-1].FechaHasta).getTime();
+var fin    = new Date(this.detalleViaje.carga.movimientos[0].FechaDesde).getTime();
+
+    return  this.calcularTiempo((fin - inicio)/1000) 
   }
 }

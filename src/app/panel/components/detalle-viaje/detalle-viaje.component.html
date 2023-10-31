@@ -59,10 +59,23 @@
                             <div #collapse="ngbCollapse" [(ngbCollapse)]="colapseRemitos">
                                 <div class="card">
                                     <div class="card-body">
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label text-muted fw-bold" for="remitos-todos">
+                                                Todos
+                                            </label>
+                                            <input  class="form-check-input" [(ngModel)]="todos" type="checkbox" role="switch" id="remitos-todos" (click)="cargaRemito('TODOS')" [disabled]="!play || detalleViaje.carga?.Estado == 3 || todos" >
+
+                                        </div>
+                                
                                         <div class="remitos " *ngFor="let remito of detalleViaje.detalle">                                            
                                             <div class="form-check form-switch">
-                                                <input  class="form-check-input" type="checkbox" role="switch" id="remitos-{{ remito.Entrega }}" (click)="cargaRemito(remito.Entrega)" [disabled]="!play || detalleViaje.carga?.Estado == 3" [checked]="remitoCargado(remito.Entrega)">
-                                                <label class="form-check-label" for="remitos-{{ remito.Entrega }}">#{{ remito.Entrega }} - {{remito.Cliente}}</label>
+                                                <hr class="m-0">
+                                                <input  class="form-check-input mt-3" type="checkbox" role="switch" id="remitos-{{ remito.Entrega }}" (click)="cargaRemito(remito.Entrega)" [disabled]="!play || detalleViaje.carga?.Estado == 3" [checked]="remitoCargado(remito.Entrega)">
+                                                <label class="form-check-label" for="remitos-{{ remito.Entrega }}">
+                                                    {{remito.Cliente}} <br>
+                                                    <small>Pedido #{{ remito.Pedido }}</small> - 
+                                                    <small>Entrega #{{ remito.Entrega }} </small>  
+                                                </label>
                                                 
                                             </div>
                                         </div>
@@ -139,32 +152,39 @@
         <div class="col-lg-6 mb-3 " *ngIf="detalleViaje.carga?.movimientos?.length  > 0">
             <div class="card bg-secondary bg-opacity-10 ">
                 <h4 class="card-header border-bottom mb-3">MOVIMIENTOS</h4>
+                
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th class=" d-none d-md-table-cell" scope="col ">#</th>
                                 <th class=" d-none d-md-table-cell" scope="col">Id Ctrl Carga</th>
-                                <th scope="col">Fecha Desde</th>
-                                <th scope="col">Fecha Hasta</th>
+                                <th scope="col">Desde</th>
+                                <th scope="col">Hasta</th>
                                 <th scope="col">Tiempo</th>
                                 <th scope="col">Motivo</th>
+                                <th scope="col">Acumulado</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let movs of detalleViaje.carga.movimientos; index as i">
-                                <th class=" d-none d-md-table-cell" scope="row">{{movs.IdControlCargaMovimiento}}</th>
-                                <td class=" d-none d-md-table-cell" align="center">
-                                    {{movs.IdControlCarga}}
-                                </td>
-                                <td>  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
-                                <td>  {{movs.FechaHasta | date: 'dd-MM-YY HH:mm:ss'}}</td>
-                                <td *ngIf="movs.FechaHasta"> {{ calcularTiempo(movs.segundos) }}</td>
-                                <td *ngIf="!movs.FechaHasta"> </td>
-                                <td> {{getMotivo(movs.IdMotivo)}}</td>
+                                <th class=" d-none d-md-table-cell align-middle" scope="row">{{movs.IdControlCargaMovimiento}}</th>
+                                <td class=" d-none d-md-table-cell align-middle" align="center">{{movs.IdControlCarga}}</td>
+                                <td class="align-middle">  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
+                                <td class="align-middle">  {{movs.FechaHasta | date: 'dd-MM-YY HH:mm:ss'}}</td>
+                                <td class="align-middle" *ngIf="movs.FechaHasta"> {{ calcularTiempo(movs.segundos) }}</td>
+                                <td class="align-middle"*ngIf="!movs.FechaHasta"> </td>
+                                <td class="align-middle"> {{getMotivo(movs.IdMotivo)}}</td>
+                                <td class="align-middle" *ngIf="movs.FechaHasta"> {{ calcularSubtotal(i) }}</td>
+                                <td class="align-middle" *ngIf="!movs.FechaHasta"> </td>
+
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="card-footer">
+                    <p class="float-end"> Tiempo Bruto: {{calcularTotal()}}</p>
+
                 </div>
             </div>
         </div>
