@@ -157,8 +157,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class=" d-none d-md-table-cell" scope="col ">#</th>
-                                <th class=" d-none d-md-table-cell" scope="col">Id Ctrl Carga</th>
+                                <!--<th class=" d-none d-md-table-cell" scope="col ">#</th>
+                                <th class=" d-none d-md-table-cell" scope="col">Id Ctrl Carga</th>-->
                                 <th scope="col">Desde</th>
                                 <th scope="col">Hasta</th>
                                 <th scope="col">Tiempo</th>
@@ -168,8 +168,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let movs of detalleViaje.carga.movimientos; index as i">
-                                <th class=" d-none d-md-table-cell align-middle" scope="row">{{movs.IdControlCargaMovimiento}}</th>
-                                <td class=" d-none d-md-table-cell align-middle" align="center">{{movs.IdControlCarga}}</td>
+                                <!--<th class=" d-none d-md-table-cell align-middle" scope="row">{{movs.IdControlCargaMovimiento}}</th>
+                                <td class=" d-none d-md-table-cell align-middle" align="center">{{movs.IdControlCarga}}</td>-->
                                 <td class="align-middle">  {{movs.FechaDesde | date: 'dd-MM-YY HH:mm:ss'}}</td>
                                 <td class="align-middle">  {{movs.FechaHasta | date: 'dd-MM-YY HH:mm:ss'}}</td>
                                 <td class="align-middle" *ngIf="movs.FechaHasta"> {{ calcularTiempo(movs.segundos) }}</td>

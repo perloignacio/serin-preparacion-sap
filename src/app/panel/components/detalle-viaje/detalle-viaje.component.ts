@@ -445,9 +445,14 @@ detener(){
 
   }
   calcularTotal(){
-    var inicio = new Date(this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length-1].FechaHasta).getTime();
-var fin    = new Date(this.detalleViaje.carga.movimientos[0].FechaDesde).getTime();
-
-    return  this.calcularTiempo((fin - inicio)/1000) 
+    if(this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length-1].FechaHasta){
+      var inicio = new Date(this.detalleViaje.carga.movimientos[this.detalleViaje.carga.movimientos.length-1].FechaHasta).getTime();
+      var fin    = new Date(this.detalleViaje.carga.movimientos[0].FechaDesde).getTime();
+  
+      return  this.calcularTiempo((fin - inicio)/1000) 
+    }else{
+      return 0;
+    }
+    
   }
 }
