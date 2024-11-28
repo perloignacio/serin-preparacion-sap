@@ -136,7 +136,7 @@
                         
                                 <form enctype="multipart/form-data" (ngSubmit)="subirFotos()">
                         
-                                    <input class="m-3 " [(ngModel)]="hasfoto" name="hasfoto" type="file" accept="image/*" capture="camera" id="camera"  (change)="onFileSelected($event)" />
+                                    <input class="m-3" [(ngModel)]="hasfoto" name="hasfoto" type="file" accept="image/*" capture="camera" id="camera" (change)="onFileSelected($event)" multiple>
                                     <button type="submit" class="btn btn-outline-info my-3">
                                         Guardar
                                     </button>

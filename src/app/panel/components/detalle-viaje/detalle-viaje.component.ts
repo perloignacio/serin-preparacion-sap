@@ -42,7 +42,7 @@ export class DetalleViajeComponent {
   currentRate:number =1;
   IdMotivo:number=0;
   fotosURL:string;
-  selectedFile:any;
+  selectedFiles: any[] = [];
   cronometro:Timer;
   hasfoto:string;
   TextMotivo:string;
@@ -169,8 +169,8 @@ remitoCargado(entrega:string){
 
 }
 onFileSelected(event:any) {
-  this.selectedFile = event.target.files[0];
-  console.log(this.selectedFile);
+  this.selectedFiles = Array.from(event.target.files);
+  console.log(this.selectedFiles);
 }
 subirFotos(){
   this.loader.cargando =true;
@@ -181,19 +181,21 @@ subirFotos(){
     "IdControlCargaMovimiento":this.detalleViaje.carga.IdControlCarga
   };
   form.append("objeto",this.loader.convertToJSON(objFoto).objeto);
-  form.append('', this.selectedFile);
- // console.log(form);
-  
-    this.srvViaje.setFoto(form).subscribe((dv)=> {
-      next:{
-        this.detalleViaje = dv;
-        this.getFotos();
-        this.colapseOperarios = true;
-        this.hasfoto = null;
-        this.loader.cargando =false;
-  
-      }
-    })
+
+  this.selectedFiles.forEach(file => {
+    form.append('files', file);
+  });
+
+  this.srvViaje.setFoto(form).subscribe((dv)=> {
+    next:{
+      this.detalleViaje = dv;
+      this.getFotos();
+      this.colapseOperarios = true;
+      this.hasfoto = null;
+      this.loader.cargando =false;
+
+    }
+  });
  }
 
  
