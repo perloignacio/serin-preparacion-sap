@@ -42,7 +42,7 @@ export class DetalleViajeComponent {
   currentRate:number =1;
   IdMotivo:number=0;
   fotosURL:string;
-  selectedFiles: any[] = [];
+  selectedFiles: File[] = [];
   cronometro:Timer;
   hasfoto:string;
   TextMotivo:string;
@@ -168,9 +168,26 @@ remitoCargado(entrega:string){
  return this.detalleViaje.remitosCargados?.filter(element => element.Entrega === entrega).length >0; 
 
 }
-onFileSelected(event:any) {
-  this.selectedFiles = Array.from(event.target.files);
-  console.log(this.selectedFiles);
+
+errorMessage: string = '';
+
+onFileSelected(event: Event) {
+  this.errorMessage = '';
+  const input = event.target as HTMLInputElement;
+  if (input.files) {
+    const files = Array.from(input.files);
+    
+    const invalidFiles = files.filter(file => !file.type.startsWith('image/'));
+    
+    if (invalidFiles.length > 0) {
+      this.errorMessage = 'Por favor, seleccione solo imágenes';
+      input.value = '';
+      return;
+    }
+
+    this.selectedFiles = files;
+  }
+  console.log('Archivos seleccionados:', this.selectedFiles);
 }
 subirFotos(){
   this.loader.cargando =true;
